@@ -1,0 +1,19 @@
+{
+  "name": "projeto",
+  "version": "1.0.0",
+  "description": "Exemplo para ciracao do packge.json",
+  "main": "app.js",
+  "scripts": {
+    "test": "Vamos deixar sem script"
+  },
+  "keywords": [
+    "Type",
+    "script",
+    "node.js"
+  ],
+  "author": "Joao Victor Medeiros Rocha",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
