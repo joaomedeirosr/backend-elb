@@ -14,6 +14,8 @@
   "author": "Joao Victor Medeiros Rocha",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "swagger-autogen": "^2.18.8",
+    "swagger-ui-express": "^4.3.0"
   }
 }
