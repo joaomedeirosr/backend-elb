@@ -3,10 +3,10 @@ const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger_output.json");
 
-// Importando o banco de dados Mongoose
+// Importando o Mongoose que faz a conversa com o Banco MongoDB
 var mongoose = require("mongoose");
 
-// URL do nosso cluster direto do Mongoose
+// URL do nosso cluster direto do Mongoose formato (user:password)
 var url =
   "mongodb+srv://123:123@cluster0.nzcul.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
