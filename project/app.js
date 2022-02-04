@@ -12,6 +12,7 @@ var Produtos = require("./models/contatos");
 var url =
   "mongodb+srv://123:123@cluster0.nzcul.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
+const options = { useNewUrlParser: true };
 mongoose.connect(url, options);
 
 // Interacoes ou logs no console de que o Banco foi conectado
