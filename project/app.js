@@ -6,11 +6,13 @@ const swaggerFile = require("./swagger_output.json");
 // Importando o Mongoose que faz a conversa com o Banco MongoDB
 var mongoose = require("mongoose");
 
+var Produtos = require("./models/contatos");
+
 // URL do nosso cluster direto do Mongoose formato (user:password)
 var url =
   "mongodb+srv://123:123@cluster0.nzcul.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-mongoose.connect(url);
+mongoose.connect(url, options);
 
 // Interacoes ou logs no console de que o Banco foi conectado
 mongoose.connection.on("error", (erro) => {
@@ -43,9 +45,10 @@ app.post("/contatos/", (req, res) => {
   var Contatos = req.body;
   console.log(req.body);
 
-  return res.status(201).send({
-    message: "Tudo ok com o metodo POST para registrar um novo usuário!",
-    codigo: 200,
+  Produtos.create(req.body, (err, data) => {
+    return res.status(201).send({
+      message: "Tudo ok usuário cadastrado com sucesso!",
+    });
   });
 });
 
