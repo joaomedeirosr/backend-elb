@@ -6,7 +6,7 @@ const swaggerFile = require("./swagger_output.json");
 // Importando o Mongoose que faz a conversa com o Banco MongoDB
 var mongoose = require("mongoose");
 
-var Produtos = require("./models/contatos");
+var Contatos = require("./models/contatos");
 
 // URL do nosso cluster direto do Mongoose formato (user:password)
 var url =
@@ -38,29 +38,41 @@ app.get("/", function (req, res) {
   res.send("Parabéns servidor em funcionamento!");
 });
 
-// Aula 2 ---> Criando uma API  de Contatos <----
+// ---> Criando uma API de Contatos com arquitetura CRUD <----
 
 // Create ( C )
 app.post("/contatos/", (req, res) => {
   // Código para que o método da API faca alguma coisa!
-  var Contatos = req.body;
-  console.log(req.body);
 
-  Produtos.create(req.body, (err, data) => {
-    return res.status(201).send({
-      message: "Tudo ok usuário cadastrado com sucesso!",
+  var codigo = req.body.codigo;
+
+  if (req.body.descricao == undefined || req.body.descricao == "") {
+    return res.status(500).send({
+      message: "O Contato deve fornecer uma breve descricao",
     });
+  }
+
+  Contatos.create(req.body, (err, data) => {
+    console.log(data);
+    if (data.length > 0) {
+      return res.status(500).send({
+        message: "Contato ja está cadastrado no Sistema Codigo:" + codigo,
+      });
+    } else {
+      Contatos.create(req.body, (err, data) => {
+        return res.status(201).send({
+          message: "Tudo ok contato foi adicionado com sucesso!",
+        });
+      });
+    }
   });
 });
 
 // Read ( R )
 app.get("/contatos:codigo/", (req, res) => {
   var parametro = req.params;
-  console.log(parametro);
-  return res.status(200).send({
-    message:
-      "Tudo ok com o método GET para consultar os usuários cadastrados!" +
-      parametro.codigo,
+  Contatos.find({}, (err, data) => {
+    return res.status(200).send(data);
   });
 });
 
@@ -68,21 +80,19 @@ app.get("/contatos:codigo/", (req, res) => {
 app.put("/contatos:codigo/", (req, res) => {
   var contatos = req.body;
 
-  console.log(contatos);
-
-  return res.status(201).send({
-    message:
-      "Tudo ok com o método put para alterar o nome do usuário cadastrado!" +
-      req.params.codigo,
+  Contatos.findOneAndDelete({ codigo }, { $set: req.body }, (err, data) => {
+    return res
+      .status(201)
+      .send({ message: "O nome do contato foi alterado com sucesso!" });
   });
 });
 
 // Delete ( D )
 app.delete("/contatos/", (req, res) => {
-  return res.status(200).send({
-    message:
-      "Tudo ok com o método delete para deletar um usuário já cadastrado!" +
-      req.params.codigo,
+  var codigo = req.params.codigo;
+
+  Contatos.findOneAndDelete({}, () => {
+    return res.status(200).send({ message: "Contato excluído com sucesso!" });
   });
 });
 
