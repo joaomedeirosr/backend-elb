@@ -8,6 +8,9 @@ var mongoose = require("mongoose");
 
 var Contatos = require("./models/contatos");
 
+// Importando a Rota Contatos
+var routeContatos = require("./routes/contatos");
+
 // URL do nosso cluster direto do Mongoose formato (user:password)
 var url =
   "mongodb+srv://123:123@cluster0.nzcul.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -33,68 +36,21 @@ const app = express();
 
 app.use(express.json());
 
-app.get("/", function (req, res) {
-  console.log("Recebi o request");
-  res.send("Parabéns servidor em funcionamento!");
-});
+app.get("/", function (req, res) {});
 
 // ---> Criando uma API de Contatos com arquitetura CRUD <----
 
 // Create ( C )
-app.post("/contatos/", (req, res) => {
-  // Código para que o método da API faca alguma coisa!
-
-  var codigo = req.body.codigo;
-
-  if (req.body.descricao == undefined || req.body.descricao == "") {
-    return res.status(500).send({
-      message: "O Contato deve fornecer uma breve descricao",
-    });
-  }
-
-  Contatos.create(req.body, (err, data) => {
-    console.log(data);
-    if (data.length > 0) {
-      return res.status(500).send({
-        message: "Contato ja está cadastrado no Sistema Codigo:" + codigo,
-      });
-    } else {
-      Contatos.create(req.body, (err, data) => {
-        return res.status(201).send({
-          message: "Tudo ok contato foi adicionado com sucesso!",
-        });
-      });
-    }
-  });
-});
+app.post("/contatos/", (req, res) => {});
 
 // Read ( R )
-app.get("/contatos:codigo/", (req, res) => {
-  var parametro = req.params;
-  Contatos.find({}, (err, data) => {
-    return res.status(200).send(data);
-  });
-});
+app.get("/contatos:codigo/", (req, res) => {});
 
 // Update ( U )
-app.put("/contatos:codigo/", (req, res) => {
-  var contatos = req.body;
-
-  Contatos.findOneAndDelete({ codigo }, { $set: req.body }, (err, data) => {
-    return res
-      .status(201)
-      .send({ message: "O nome do contato foi alterado com sucesso!" });
-  });
-});
+app.put("/contatos:codigo/", (req, res) => {});
 
 // Delete ( D )
-app.delete("/contatos/", (req, res) => {
-  var codigo = req.params.codigo;
-
-  Contatos.findOneAndDelete({}, () => {
-    return res.status(200).send({ message: "Contato excluído com sucesso!" });
-  });
-});
+app.delete("/contatos/", (req, res) => {});
 
 app.use(express.static("public"));
 
