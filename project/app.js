@@ -56,7 +56,7 @@ app.use("/contatos", middlewares.autenticacao, routeContatos);
 
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 module.exports = app;
 
