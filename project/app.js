@@ -7,9 +7,11 @@ const swaggerFile = require("./swagger_output.json");
 var mongoose = require("mongoose");
 
 var Contatos = require("./models/contatos");
+var middlewares = require("./middlewares/middlewares");
 
 // Importando a Rota Contatos
 var routeContatos = require("./routes/contatos");
+var routeUsuario = require("./routes/usuarios");
 
 // URL do nosso cluster direto do Mongoose formato (user:password)
 var url =
@@ -31,31 +33,31 @@ mongoose.connection.on("connected", () => {
   console.log("Conectado ao banco de dados!!");
 });
 
+// ---> Criando uma API de Contatos com arquitetura CRUD <----
+
+// Create ( C )
+
+// Read ( R )
+
+// Update ( U )
+
+// Delete ( D )
+
 // Instanciando o express
 const app = express();
 
 app.use(express.json());
 
-app.get("/", function (req, res) {});
-
-// ---> Criando uma API de Contatos com arquitetura CRUD <----
-
-// Create ( C )
-app.post("/contatos/", (req, res) => {});
-
-// Read ( R )
-app.get("/contatos:codigo/", (req, res) => {});
-
-// Update ( U )
-app.put("/contatos:codigo/", (req, res) => {});
-
-// Delete ( D )
-app.delete("/contatos/", (req, res) => {});
-
 app.use(express.static("public"));
 
+// Faz a chamada da rota
+app.use("/usuarios", routeUsuario);
+app.use("/contatos", middlewares.autenticacao, routeContatos);
+
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 app.listen(3000);
+
 module.exports = app;
 
 // Fica escutando a porta padrao ou seja a porta local(Servidor Local)
